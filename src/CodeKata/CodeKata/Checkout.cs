@@ -37,21 +37,23 @@ namespace CodeKata
             foreach (var groupedItem in groupedItems)
             {
                 var rules = _rules[groupedItem.Key];
-                var itemCount = groupedItem.Count();
+                var itemsCount = groupedItem.Count();
 
-                while (itemCount > 0)
+                foreach (var rule in rules)
                 {
-                    var rule = rules.FirstOrDefault(r => r.NumberOfItems <= itemCount);
-
-                    if (rule == null)
+                    if (rule.NumberOfItems > itemsCount)
                     {
-                        throw new InvalidOperationException("Unable to match a rule.");
+                        continue;
                     }
 
-                    var numberOfTimesRuleApplied = itemCount / rule.NumberOfItems;
-
+                    var numberOfTimesRuleApplied = itemsCount / rule.NumberOfItems;
                     total += rule.TotalPrice * numberOfTimesRuleApplied;
-                    itemCount -= rule.NumberOfItems * numberOfTimesRuleApplied;
+                    itemsCount -= rule.NumberOfItems * numberOfTimesRuleApplied;
+                }
+
+                if (itemsCount != 0)
+                {
+                    throw new InvalidOperationException("Unable to match a rule.");
                 }
             }
 
