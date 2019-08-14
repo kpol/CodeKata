@@ -20,7 +20,7 @@ namespace CodeKata
 
         public void Scan(string item)
         {
-            if (!_rules.TryGetValue(item, out _))
+            if (!_rules.ContainsKey(item))
             {
                 throw new InvalidOperationException($"The item '{item}' is not registered within rules.");
             }
